@@ -1,4 +1,5 @@
 const URL="http://localhost:5000/api/tasks";
+import { Task } from "@/app/(protected)/task/page";
 
 interface TaskCreate{
     title:string,
@@ -6,6 +7,24 @@ interface TaskCreate{
     due_date:string,
     status:string,
     priority:string
+}
+
+export interface AnalyticsData {
+  statusDistribution: {
+    todo: number;
+    inprogress: number;
+    completed: number;
+  };
+  priorityDistribution: {
+    high: number;
+    medium: number;
+    low: number;
+  };
+  summeryCard: {
+    totalActive: number;
+    completedToday: number;
+    overdue: number;
+  };
 }
 
 export async function taskCreateAPI({title, description, due_date, status, priority}:TaskCreate) {
@@ -38,4 +57,56 @@ export async function taskListAPI(){
 
  return{success:true, task:data}
 
+}
+
+
+export async function taskDeleteAPI(id: string) {
+  const res = await fetch(`${URL}/${id}`, {
+    method: "DELETE",
+    credentials: "include", 
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    return { success: false, error: data.error || "Something Wrong" };
+  }
+
+  return { success: true };
+}
+
+
+export async function taskUpdateAPI(id: string, task: Partial<Task>) {
+  const res = await fetch(`${URL}/${id}`, {
+    method: "PUT", 
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include", 
+    body: JSON.stringify(task),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    return { success: false, error: data.error || "Something Wrong" };
+  }
+
+  return { success: true, task: data };
+}
+
+
+export async function analyticsAPI() {
+  const res = await fetch(`${URL}`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    return { success: false, error: data.error || "Something Wrong" };
+  }
+
+  return { success: true, data: data as AnalyticsData };
 }

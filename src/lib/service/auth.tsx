@@ -45,3 +45,18 @@ export async function regAPI(firstName:string, lastName:string, email:string, pa
 
     return {success:true, user:data}
 }
+
+export async function logoutAPI() {
+  const res = await fetch(`${URL}/logout`, {
+    method: "POST",
+    credentials: "include",
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    return { success: false, error: data.error || "Something Wrong" };
+  }
+
+  return { success: true };
+}
