@@ -6,7 +6,7 @@ export default function NaviBar() {
   <div className="flex items-center gap-4">
     <h4 className="text-slate-700">Malinga</h4>
 
-    <div className="h-10 w-10 rounded-full bg-blue-400"></div>
+    <div className="h-10 w-10 rounded-full bg-blue-400 flex items-center justify-center"> <h3 className="text-white">M</h3></div>
   </div>
 
 </header>
