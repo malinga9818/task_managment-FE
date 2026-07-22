@@ -54,14 +54,10 @@ export default function CreateTaskModal({
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black/40">
-
             <div className="bg-white rounded-lg p-6 w-96">
-
                 <h2 className="text-xl font-bold mb-4">
                     Create New Task
                 </h2>
-
-
                 <input
                     name="title"
                     value={task.title}
@@ -69,8 +65,6 @@ export default function CreateTaskModal({
                     className="w-full border rounded p-2 mb-3"
                     placeholder="Task title"
                 />
-
-
                 <textarea
                     name="description"
                     value={task.description}
@@ -78,12 +72,9 @@ export default function CreateTaskModal({
                     className="w-full border rounded p-2 mb-3"
                     placeholder="Description"
                 />
-
-
                 <label className="text-sm">
                     Due Date
                 </label>
-
                 <input
                     type="date"
                     name="due_date"
@@ -91,8 +82,6 @@ export default function CreateTaskModal({
                     onChange={handleChange}
                     className="w-full border rounded p-2 mb-3"
                 />
-
-
                 <select
                     name="priority"
                     value={task.priority}
@@ -103,8 +92,6 @@ export default function CreateTaskModal({
                     <option value="Medium">Medium</option>
                     <option value="Low">Low</option>
                 </select>
-
-
                 <select
                     name="status"
                     value={task.status}
@@ -115,16 +102,14 @@ export default function CreateTaskModal({
                     <option value="In Progress">In Progress</option>
                     <option value="Completed">Completed</option>
                 </select>
-
                 {success && (
-            <      p className="mb-3 text-sm text-green-600 font-medium">
+                <p className="mb-3 text-sm text-green-600 font-medium">
                          ✅ Task created successfully!
-                  </p>
+                </p>
                 )}
                 {error && (
                     <p className="mb-3 text-sm text-red-500">{error}</p>
                 )}
-
                 <div className="flex justify-end gap-3">
                     <button
                         onClick={onClose}
@@ -132,7 +117,6 @@ export default function CreateTaskModal({
                     >
                         Cancel
                     </button>
-
                     <button
                         onClick={handleSubmit}
                         className="px-4 py-2 bg-sky-500 text-white rounded"
@@ -140,9 +124,7 @@ export default function CreateTaskModal({
                         Create
                     </button>
                 </div>
-
             </div>
-
         </div>
     );
 }

@@ -109,9 +109,7 @@ export default function TasksTable({
                 ))
               ) : (
                 <tr>
-                  <td colSpan={5} className="py-4 text-center text-gray-500">
-                    No tasks found
-                  </td>
+                  <td colSpan={5} className="py-4 text-center text-gray-500">No tasks found</td>
                 </tr>
               )}
             </tbody>

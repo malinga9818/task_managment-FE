@@ -1,4 +1,5 @@
 const URL="http://localhost:5000/api/tasks";
+import { Task } from "@/app/(protected)/task/page";
 
 interface TaskCreate{
     title:string,
@@ -38,4 +39,40 @@ export async function taskListAPI(){
 
  return{success:true, task:data}
 
+}
+
+
+export async function taskDeleteAPI(id: string) {
+  const res = await fetch(`${URL}/${id}`, {
+    method: "DELETE",
+    credentials: "include", 
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    return { success: false, error: data.error || "Something Wrong" };
+  }
+
+  return { success: true };
+}
+
+
+export async function taskUpdateAPI(id: string, task: Partial<Task>) {
+  const res = await fetch(`${URL}/${id}`, {
+    method: "PUT", 
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include", 
+    body: JSON.stringify(task),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    return { success: false, error: data.error || "Something Wrong" };
+  }
+
+  return { success: true, task: data };
 }

@@ -1,32 +1,3 @@
-// "use client";
-
-// import { useState } from "react";
-// import TaskCreatePopUp from "./components/taskCreatePopUp";
-
-// export default function Page() {
-//     const [openPopUp, setOpePopUp] = useState(false);
-
-//     return (
-//         <div>
-//              <div>
-//                 <button
-//                     onClick={() => setOpePopUp(true)}
-//                     className="w-32 hover:bg-sky-700 bg-sky-500 text-white rounded p-2"
-//                 >
-//                     New Task
-//                 </button>
-
-
-//                 <TaskCreatePopUp
-//                     open={openPopUp}
-//                     onClose={() => setOpePopUp(false)}
-//                 />
-//             </div>
-           
-//         </div>
-//     );
-// }
-
         
 "use client";
 
@@ -35,6 +6,8 @@ import TasksFilter from "./components/taskFilters"
 import TasksTable from "./components/taskTables";
 import TaskCreatePopUp from "./components/taskCreatePopUp";
 import { taskListAPI } from "@/lib/service/task";
+import { taskDeleteAPI } from "@/lib/service/task";
+import EditTaskModal from "./components/taskEdirPopUp";
 
 export interface Task {
   id: string;
@@ -45,48 +18,7 @@ export interface Task {
   status: "To Do" | "In Progress" | "Completed";
 }
 
-// export const tasks: Task[] = [
-//   {
-//     id: "t1",
-//     title: "Set up auth flow",
-//     description: "Login and register pages",
-//     due_date: "2026-07-25",
-//     priority: "High",
-//     status: "In Progress",
-//   },
-//   {
-//     id: "t2",
-//     title: "Build task modal",
-//     description: "Create/edit task popup",
-//     due_date: "2026-07-27",
-//     priority: "Medium",
-//     status: "To Do",
-//   },
-//   {
-//     id: "t3",
-//     title: "Analytics dashboard",
-//     description: "Charts and KPI cards",
-//     due_date: "2026-07-30",
-//     priority: "High",
-//     status: "To Do",
-//   },
-//   {
-//     id: "t4",
-//     title: "Fix login validation",
-//     description: "Email format check",
-//     due_date: "2026-07-20",
-//     priority: "Low",
-//     status: "Completed",
-//   },
-// ];
 
-// export interface Task {
-//   title: string;
-//   description: string;
-//   due_date: string;
-//   priority: "High" | "Medium" | "Low";
-//   status: "To Do" | "In Progress" | "Completed";
-// }
 
 export default function TasksPage() {
   const [search, setSearch] = useState("");
@@ -94,9 +26,10 @@ export default function TasksPage() {
   const [priority, setPriority] = useState("all");
   const [openPopUp, setOpenPopUp] = useState(false);
   const [tasks, setTasks] = useState <Task[]>([]);
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
   
   
-    useEffect(() => {
+  useEffect(() => {
     async function fetchTasks() {
       const result = await taskListAPI();
       console.log(result);
@@ -120,6 +53,26 @@ export default function TasksPage() {
     });
   }, [tasks, search, status, priority]);
 
+   async function handleDelete(task: Task) {
+    const result = await taskDeleteAPI(task.id);
+      if (result.success) {
+        setTasks((prev) => prev.filter((t) => t.id !== task.id));
+      }
+    }
+
+
+    function handleEdit(task: Task) {
+      setEditingTask(task);
+    }
+
+  function handleUpdated(updatedTask: Task) {
+    setTasks((prev) =>
+      prev.map((t) => (t.id === updatedTask.id ? updatedTask : t))
+    );
+    setEditingTask(null);
+  }
+    
+
   return (
     <div className="flex flex-col bg-gray-50 gap-6 p-6">
       <div className="flex items-start justify-between gap-4">
@@ -142,11 +95,21 @@ export default function TasksPage() {
         </button>
       </div>
 
-      <TasksTable filteredTasks={filteredTasks} />
+      <TasksTable filteredTasks={filteredTasks} 
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
 
       <TaskCreatePopUp
         open={openPopUp}
         onClose={() => setOpenPopUp(false)}
+      />
+
+      <EditTaskModal
+        open={editingTask !== null}
+        task={editingTask}
+        onClose={() => setEditingTask(null)}
+        onUpdated={handleUpdated}
       />
     </div>
   );
