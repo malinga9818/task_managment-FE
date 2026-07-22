@@ -78,7 +78,7 @@ export async function taskDeleteAPI(id: string) {
 
 export async function taskUpdateAPI(id: string, task: Partial<Task>) {
   const res = await fetch(`${URL}/${id}`, {
-    method: "PUT", 
+    method: "PATCH", 
     headers: {
       "Content-Type": "application/json",
     },
@@ -97,12 +97,13 @@ export async function taskUpdateAPI(id: string, task: Partial<Task>) {
 
 
 export async function analyticsAPI() {
-  const res = await fetch(`${URL}`, {
+  const res = await fetch(`${URL}/summery-card`, {
     method: "GET",
     credentials: "include",
   });
 
   const data = await res.json();
+  console.log("analytic data",data);
 
   if (!res.ok) {
     return { success: false, error: data.error || "Something Wrong" };
