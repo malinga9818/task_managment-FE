@@ -1,4 +1,4 @@
-const URL = "http://localhost:5000/api/tasks";
+const URL="http://localhost:5000/api/tasks";
 
 interface TaskCreate{
     title:string,
@@ -22,4 +22,20 @@ export async function taskCreateAPI({title, description, due_date, status, prior
     }
 
     return {success:true, user:data}
+}
+
+export async function taskListAPI(){
+ const res = await fetch(`${URL}`, {
+    credentials:"include",
+    method:"get"
+ });
+
+ const data = await res.json();
+ console.log("fetching data: ",data)
+ if (!res.ok){
+    return {success:false, error:data.error || "Something Wrong"} 
+ }
+
+ return{success:true, task:data}
+
 }
