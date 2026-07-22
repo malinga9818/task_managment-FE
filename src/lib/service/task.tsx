@@ -9,6 +9,24 @@ interface TaskCreate{
     priority:string
 }
 
+export interface AnalyticsData {
+  statusDistribution: {
+    todo: number;
+    inprogress: number;
+    completed: number;
+  };
+  priorityDistribution: {
+    high: number;
+    medium: number;
+    low: number;
+  };
+  summeryCard: {
+    totalActive: number;
+    completedToday: number;
+    overdue: number;
+  };
+}
+
 export async function taskCreateAPI({title, description, due_date, status, priority}:TaskCreate) {
     const res = await fetch(`${URL}`, {
         method:"post",
@@ -75,4 +93,20 @@ export async function taskUpdateAPI(id: string, task: Partial<Task>) {
   }
 
   return { success: true, task: data };
+}
+
+
+export async function analyticsAPI() {
+  const res = await fetch(`${URL}`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    return { success: false, error: data.error || "Something Wrong" };
+  }
+
+  return { success: true, data: data as AnalyticsData };
 }
