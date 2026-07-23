@@ -1,7 +1,7 @@
-const URL = "http://localhost:5000/api/users";
+const URL = process.env.NEXT_PUBLIC_API_URL
 
 export async function profileAPI() {
-  const res = await fetch(`${URL}/me`, { // adjust endpoint to match your backend
+  const res = await fetch(`${URL}/users/me`, { // adjust endpoint to match your backend
     method: "GET",
     credentials: "include",
   });
@@ -17,7 +17,7 @@ export async function profileAPI() {
 
 export async function profileUpdateAPI(profile: {firstName: string;lastName: string; email: string;}) {
     console.log("profile",profile);
-  const res = await fetch(`${URL}/me`, {
+  const res = await fetch(`${URL}/users/me`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
