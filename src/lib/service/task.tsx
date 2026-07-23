@@ -1,4 +1,5 @@
-const URL="http://localhost:5000/api/tasks";
+const URL = process.env.NEXT_PUBLIC_API_URL
+
 import { Task } from "@/app/(protected)/task/page";
 
 interface TaskCreate{
@@ -28,7 +29,7 @@ export interface AnalyticsData {
 }
 
 export async function taskCreateAPI({title, description, due_date, status, priority}:TaskCreate) {
-    const res = await fetch(`${URL}`, {
+    const res = await fetch(`${URL}/tasks`, {
         method:"post",
         headers:{"Content-Type": "application/json"},
         credentials:"include",
@@ -44,7 +45,7 @@ export async function taskCreateAPI({title, description, due_date, status, prior
 }
 
 export async function taskListAPI(){
- const res = await fetch(`${URL}`, {
+ const res = await fetch(`${URL}/tasks`, {
     credentials:"include",
     method:"get"
  });
@@ -61,7 +62,7 @@ export async function taskListAPI(){
 
 
 export async function taskDeleteAPI(id: string) {
-  const res = await fetch(`${URL}/${id}`, {
+  const res = await fetch(`${URL}/tasks/${id}`, {
     method: "DELETE",
     credentials: "include", 
   });
@@ -77,7 +78,7 @@ export async function taskDeleteAPI(id: string) {
 
 
 export async function taskUpdateAPI(id: string, task: Partial<Task>) {
-  const res = await fetch(`${URL}/${id}`, {
+  const res = await fetch(`${URL}/tasks/${id}`, {
     method: "PATCH", 
     headers: {
       "Content-Type": "application/json",
@@ -97,7 +98,7 @@ export async function taskUpdateAPI(id: string, task: Partial<Task>) {
 
 
 export async function analyticsAPI() {
-  const res = await fetch(`${URL}/summery-card`, {
+  const res = await fetch(`${URL}/tasks/summery-card`, {
     method: "GET",
     credentials: "include",
   });

@@ -1,4 +1,4 @@
-const URL = "http://localhost:5000/api/auth";
+const URL = process.env.NEXT_PUBLIC_API_URL
 
 interface LoginResponse{
     success:boolean,
@@ -6,15 +6,9 @@ interface LoginResponse{
     error?:string
 }
 
-interface UserRegisterData{
-    firstName:string,
-    lastName:string,
-    email:string,
-    password:string
-}
 
 export async function authAPI(email:string, password:string): Promise<LoginResponse>{
-    const res = await fetch(`${URL}/login`, {
+    const res = await fetch(`${URL}/auth/login`, {
         method:"post",
         headers:{"Content-Type":"application/json"},
         credentials:"include",
@@ -31,7 +25,7 @@ export async function authAPI(email:string, password:string): Promise<LoginRespo
 }
 
 export async function regAPI(firstName:string, lastName:string, email:string, password:string) {
-    const res = await fetch(`${URL}/register`, {
+    const res = await fetch(`${URL}/auth/register`, {
         method:"post",
         headers:{"Content-Type": "application/json"},
         credentials:"include",
@@ -47,7 +41,7 @@ export async function regAPI(firstName:string, lastName:string, email:string, pa
 }
 
 export async function logoutAPI() {
-  const res = await fetch(`${URL}/logout`, {
+  const res = await fetch(`${URL}/auth/logout`, {
     method: "POST",
     credentials: "include",
   });
