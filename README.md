@@ -1,10 +1,10 @@
-![alt text](image.png)
+![alt text](image-5.png)
 
 # Task Management System (Mini-ERP) — Frontend
 
 A task management dashboard built with Next.js (App Router), featuring authentication, task CRUD, and an analytics overview.
 
-![alt text](image-1.png)
+![alt text](image-6.png)
 
 ![alt text](image-3.png)
 
